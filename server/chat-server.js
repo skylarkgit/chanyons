@@ -2,9 +2,7 @@ const app = require('express')();
 const uuidv4 = require('uuid/v4');
 const socket = require('socket.io');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const bodyParser = require('body-parser');
 const db = require('./db_init');
 
 app.use(cors());

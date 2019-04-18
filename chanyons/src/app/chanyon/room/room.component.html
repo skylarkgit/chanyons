@@ -1,0 +1,46 @@
+<div *ngIf="user.exists">
+  <section>
+    <h2>
+      create room ui
+    </h2>
+    <div>
+      <form name="create" (submit)="createRoom()">
+        Title: <input type="text" [(ngModel)]="title" name="title" required />
+        <button type="submit">Create</button>
+      </form>
+    </div>
+  </section>
+
+  <hr />
+
+  <section *ngIf="room">
+    <h2>ROOM {{room}}</h2>
+    <div *ngFor="let msg of msgs">
+      {{ msg }}
+    </div>
+    <form name="msgbox" (submit)="sendMsg()">
+      <input type="text" [(ngModel)]="message" name="message" required />
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2>YourRooms</h2>
+  </section>
+
+  <section>
+    <h2>Join Room</h2>
+    <div>
+      <form name="join" (submit)="joinRoom()">
+        Title: <input type="text" [(ngModel)]="roomid" name="roomid" required />
+        <button type="submit">Join</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<div *ngIf="!user.exists">
+  <button (click)="login()">Login</button>
+</div>
