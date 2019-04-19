@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 // Source: https://mongoosejs.com/docs/2.7.x/docs/populate.html
 
-var Room = new Schema({
+var RoomSchema = new Schema({
   title: String,
   owner: String,
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],  //fkey and array
@@ -13,27 +13,28 @@ var Room = new Schema({
   timestamps: true
 });
 
-var User = new Schema({
+var UserSchema = new Schema({
   userId: String,
   userIdPub: String,
-  message: String,
-  mood: String,
+  name: String,
+  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
 }, {
   timestamps: true
 });
 
-var Message = new Schema({
+var MessageSchema = new Schema({
   userIdPub: String,
   message: String,
   mood: String,
-  replyTo: { type: Schema.Types.ObjectId, ref: 'Message' }  // fkey
+  replyTo: { type: Schema.Types.ObjectId, ref: 'Message' },  // fkey
+  roomId: String
 }, {
   timestamps: true
 });
 
-mongoose.model("Room", Room);
-mongoose.model("User", User);
-mongoose.model("Message", Message);
+var Room = mongoose.model("Room", RoomSchema);
+var User = mongoose.model("User", UserSchema);
+var Message = mongoose.model("Message", MessageSchema);
 
 
 mongoose.connect('mongodb://mongodb:7f1c982e835a68959859b5d3da2b8e4b3af30b31@ds233596.mlab.com:33596/heroku_9j6mg1f5');
@@ -41,5 +42,10 @@ mongoose.connect('mongodb://mongodb:7f1c982e835a68959859b5d3da2b8e4b3af30b31@ds2
 const mongodb = mongoose.connection;
 
 module.exports = {
-  mongodb: mongodb
+  mongodb: mongodb,
+  schema: {
+    User: User,
+    Message: Message,
+    Room: Room
+  }
 }

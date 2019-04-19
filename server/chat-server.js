@@ -49,6 +49,10 @@ io.on('connection', function(socket) {
       socket.join(room);
       socket.on(room, (data) => {
         console.log('recieved', data);
+        var msg = new db.schema.Message({userIdPub: userIdPub, message: data, mood: 'poker', replyTo: null, roomId: room});
+        msg.save(function(err) {
+          console.log(err);
+        });
         io.sockets.emit(room, data);
       });
     } else {
@@ -60,6 +64,10 @@ io.on('connection', function(socket) {
 var userSet = function(req, res) {
   let userId = uuidv4(), userIdPub = uuidv4();
   if (!req.cookies || !req.cookies.user_id || !req.cookies.user_id_pub) {
+    var user = new db.schema.User({userId: userId, userIdPub: userIdPub});
+    user.save(function(err) {
+      console.log(err);
+    });
     res.cookie('user_id', userId);
     res.cookie('user_id_pub', userIdPub);
   } else {
