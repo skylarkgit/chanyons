@@ -33,7 +33,7 @@ export class RoomComponent implements OnInit {
   }
 
   createRoom() {
-    this.httpClient.get('http://localhost:4000/create').subscribe((response: any) => {
+    this.httpClient.get('http://localhost:4000/create?title=' + this.title).subscribe((response: any) => {
       this.room = response.roomId;
       this.socket.emit('join', this.room);
       this.socket.on(this.room, (data) => {
@@ -50,7 +50,6 @@ export class RoomComponent implements OnInit {
 
   initUser(user?: any) {
     this.httpClient.get<any>('http://localhost:4000/user').subscribe((response) => {
-      console.log(this.user);
       this.user = response;
       if (this.user.userIdPub) {
         this.user.exists = true;

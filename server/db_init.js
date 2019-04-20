@@ -4,28 +4,28 @@ var Schema = mongoose.Schema;
 // Source: https://mongoosejs.com/docs/2.7.x/docs/populate.html
 
 var RoomSchema = new Schema({
-  title: String,
+  title: {type: String, required: true, unique: false},
   owner: String,
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],  //fkey and array
   settings: Schema.Types.Mixed,
-  roomId: String
+  roomId: {type: String, required: true, unique: true},
 }, {
   timestamps: true
 });
 
 var UserSchema = new Schema({
-  userId: String,
-  userIdPub: String,
-  name: String,
+  userId: {type: String, required: true, unique: true},
+  userIdPub: {type: String, required: true, unique: true},
+  name: {type: String, required: true, unique: false},
   rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
 }, {
   timestamps: true
 });
 
 var MessageSchema = new Schema({
-  userIdPub: String,
-  message: String,
-  mood: String,
+  userIdPub: {type: String, required: true, unique: false},
+  message: {type: String, required: true, unique: false},
+  mood: {type: String},
   replyTo: { type: Schema.Types.ObjectId, ref: 'Message' },  // fkey
   roomId: String
 }, {

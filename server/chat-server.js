@@ -51,7 +51,6 @@ db.mongodb.on('connected',() => {
  */
 app.get('/', (req ,res) => {
   const user = userSet(req, res);
-  console.log(res.session);
   req.session.userId = user.userId;
   req.session.userIdPub = user.userIdPub;
   if(!req.session.dirty) {
@@ -78,7 +77,8 @@ app.get('/create', (req, res) => {
   req.session.userIdPub = user.userIdPub;
 
   var roomId = uuidv4();
-  const room = new db.schema.Room({title: 'Room', roomId: roomId, owner: user.userId, members: [], settings: {}});
+  console.info('new room crated with title : ' + req.query.title);
+  const room = new db.schema.Room({title: req.query.title, roomId: roomId, owner: user.userId, members: [], settings: {}});
   room.save(function(err) {
     console.log(err);
   });
@@ -91,7 +91,6 @@ app.get('/user', (req, res) => {
   const user = {
     userIdPub: req.session.userIdPub
   };
-  console.log(user);
   res.send(user);
 });
 
@@ -99,12 +98,10 @@ app.get('/user', (req, res) => {
  * Socket connection listener
  */
 io.on('connection', function(socket) {
-  console.log('connection', socket.id);
   socket.on('join', function(room) {
       socket.join(room);
       socket.on(room, (data) => {
-        console.log('recieved', socket.handshake.session, data);
-        var msg = new db.schema.Message({userIdPub: socket.handshake.session.cookie.userIdPub, message: data, mood: 'poker', replyTo: null, roomId: room});
+        var msg = new db.schema.Message({userIdPub: socket.handshake.session.userIdPub, message: data, mood: 'poker', replyTo: null, roomId: room});
         msg.save(function(err) {
           console.log(err);
         });
@@ -119,10 +116,9 @@ io.on('connection', function(socket) {
  * @param {*} res 
  */
 var userSet = function(req, res) {
-  console.log('session', req.session);
   let userId = uuidv4(), userIdPub = uuidv4();
   if (!req.session || !req.session.userId || !req.session.userIdPub) {
-    var user = new db.schema.User({userId: userId, userIdPub: userIdPub});
+    var user = new db.schema.User({userId: userId, userIdPub: userIdPub, name: 'ad'});
     user.save(function(err) {
       console.log(err);
     });
