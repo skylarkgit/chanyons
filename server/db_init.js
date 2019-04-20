@@ -8,7 +8,7 @@ var RoomSchema = new Schema({
   owner: String,
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],  //fkey and array
   settings: Schema.Types.Mixed,
-  date: Date
+  roomId: String
 }, {
   timestamps: true
 });

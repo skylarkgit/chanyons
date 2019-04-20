@@ -49,16 +49,13 @@ export class RoomComponent implements OnInit {
   }
 
   initUser(user?: any) {
-    this.user = {
-      userId: this.cookieService.get('user_id') ? this.cookieService.get('user_id') : (user ? user.userId : null),
-      userIdPub: this.cookieService.get('user_id_pub') ? this.cookieService.get('user_id_pub') : (user ? user.userIdPub : null)
-    };
-    console.log(this.user);
-    if (this.user.userId) {
-      this.cookieService.set('user_id', this.user.userId);
-      this.cookieService.set('user_id_pub', this.user.userIdPub);
-      this.user.exists = true;
-    }
+    this.httpClient.get<any>('http://localhost:4000/user').subscribe((response) => {
+      console.log(this.user);
+      this.user = response;
+      if (this.user.userIdPub) {
+        this.user.exists = true;
+      }
+    });
   }
 
 }
