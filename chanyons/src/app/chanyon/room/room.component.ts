@@ -21,7 +21,11 @@ export class RoomComponent implements OnInit {
   constructor(
     private socket: Socket,
     private httpClient: HttpClient,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService) {
+    if (navigator) {
+      navigator.geolocation.getCurrentPosition(pos => console.log('position', pos));
+    }
+  }
 
   ngOnInit() {
     this.msgs = [];
