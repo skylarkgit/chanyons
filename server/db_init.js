@@ -3,37 +3,38 @@ var Schema = mongoose.Schema;
 
 // Source: https://mongoosejs.com/docs/2.7.x/docs/populate.html
 
-var Room = new Schema({
-  title: String,
+var RoomSchema = new Schema({
+  title: {type: String, required: true, unique: false},
   owner: String,
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],  //fkey and array
   settings: Schema.Types.Mixed,
-  date: Date
+  roomId: {type: String, required: true, unique: true},
 }, {
   timestamps: true
 });
 
-var User = new Schema({
-  userId: String,
-  userIdPub: String,
-  message: String,
-  mood: String,
+var UserSchema = new Schema({
+  userId: {type: String, required: true, unique: true},
+  userIdPub: {type: String, required: true, unique: true},
+  name: {type: String, required: true, unique: false},
+  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
 }, {
   timestamps: true
 });
 
-var Message = new Schema({
-  userIdPub: String,
-  message: String,
-  mood: String,
-  replyTo: { type: Schema.Types.ObjectId, ref: 'Message' }  // fkey
+var MessageSchema = new Schema({
+  userIdPub: {type: String, required: true, unique: false},
+  message: {type: String, required: true, unique: false},
+  mood: {type: String},
+  replyTo: { type: Schema.Types.ObjectId, ref: 'Message' },  // fkey
+  roomId: String
 }, {
   timestamps: true
 });
 
-mongoose.model("Room", Room);
-mongoose.model("User", User);
-mongoose.model("Message", Message);
+var Room = mongoose.model("Room", RoomSchema);
+var User = mongoose.model("User", UserSchema);
+var Message = mongoose.model("Message", MessageSchema);
 
 
 mongoose.connect('mongodb://mongodb:7f1c982e835a68959859b5d3da2b8e4b3af30b31@ds233596.mlab.com:33596/heroku_9j6mg1f5');
@@ -41,5 +42,10 @@ mongoose.connect('mongodb://mongodb:7f1c982e835a68959859b5d3da2b8e4b3af30b31@ds2
 const mongodb = mongoose.connection;
 
 module.exports = {
-  mongodb: mongodb
+  mongodb: mongodb,
+  schema: {
+    User: User,
+    Message: Message,
+    Room: Room
+  }
 }
