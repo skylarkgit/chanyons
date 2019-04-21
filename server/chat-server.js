@@ -20,6 +20,9 @@ const db = require('./db_init');
 const cookieParser = require('cookie-parser');
 const sharedsession = require("express-socket.io-session");
 const bodyParser = require('body-parser');
+const cron = require('./cronjobs');
+
+cron.schedule();
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
