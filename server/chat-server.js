@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const uuidv4 = require('uuid/v4');
 const socket = require('socket.io');
 const cors = require('cors');
@@ -10,7 +11,7 @@ const session = expressSession({
   store: new expressSession.MemoryStore(),
   secure: false,
   cookie: { secure: false , maxAge: 600000, httpOnly: false},
-  saveUninitialized: false,
+  saveUninitialized: true,
   proxy: undefined,
   rolling: true,
   unset: 'destroy'
@@ -18,6 +19,10 @@ const session = expressSession({
 const db = require('./db_init');
 const cookieParser = require('cookie-parser');
 const sharedsession = require("express-socket.io-session");
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Credentials", "true");
@@ -35,11 +40,14 @@ var server = app.listen(4000, function() {
 
 var io = socket(server);
 
-io.use(sharedsession(session, {
-  autoSave: true,
-  secure: false,
-  httpOnly: false
-}));
+// io.use(sharedsession(session, {
+//   autoSave: true,
+//   secure: false,
+//   httpOnly: false
+// }));
+io.use(function(socket, next) {
+  session(socket.handshake, {}, next); 
+});
 
 db.mongodb.on('connected',() => {
   console.log('mongoose connected');
@@ -68,6 +76,24 @@ app.get('/new-user', (req, res) => {
 });
 
 /**
+ * Request to create a new user
+ */
+app.post('/send-msg', (req, res) => {
+  var msg = new db.schema.Message({
+    userIdPub: req.session.userIdPub, 
+    message: req.body.msg, 
+    mood: 'poker', 
+    replyTo: null, 
+    roomId: req.body.roomId});
+  msg.save(function(err, msg) { 
+    console.log('message saved', msg);
+    // io.in(msg.roomId).emit(msg.message);
+    io.emit(msg.roomId, msg.message)
+    res.send(true);
+  });
+});
+
+/**
  * Create a new group
  */
 app.get('/create', (req, res) => {
@@ -79,12 +105,28 @@ app.get('/create', (req, res) => {
   var roomId = uuidv4();
   console.info('new room crated with title : ' + req.query.title);
   const room = new db.schema.Room({title: req.query.title, roomId: roomId, owner: user.userId, members: [], settings: {}});
-  room.save(function(err) {
-    console.log(err);
+  room.save((err, data) => {
+    if (err){
+      console.log(err);
+      res.send(null);
+    } else {
+      console.log('success', data);
+      res.send({
+        room: {
+          roomId: data.roomId,
+          title: data.title,
+          settings: data.settings
+        }
+      });
+    }
   });
-  res.send({
-    roomId: roomId
-  });
+});
+
+app.get('/room', (req, res) => {
+  var roomId = uuidv4();
+  db.schema.Room.findOne(
+    {roomId: req.query.roomId},
+    (err, data) => res.send(data));
 });
 
 app.get('/user', (req, res) => {
@@ -99,13 +141,11 @@ app.get('/user', (req, res) => {
  */
 io.on('connection', function(socket) {
   socket.on('join', function(room) {
+    console.log(socket.handshake.session, '' + socket.handshake.session + ' wants to join ' + room);
+    
       socket.join(room);
       socket.on(room, (data) => {
-        var msg = new db.schema.Message({userIdPub: socket.handshake.session.userIdPub, message: data, mood: 'poker', replyTo: null, roomId: room});
-        msg.save(function(err) {
-          console.log(err);
-        });
-        io.sockets.emit(room, data);
+        // socket.in(room).emit(data);
       });
   });
 });

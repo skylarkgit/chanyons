@@ -14,7 +14,7 @@
   <hr />
 
   <section *ngIf="room">
-    <h2>ROOM {{room}}</h2>
+    <h2>ROOM {{room.title}}</h2>
     <div *ngFor="let msg of msgs">
       {{ msg }}
     </div>
@@ -34,7 +34,7 @@
     <h2>Join Room</h2>
     <div>
       <form name="join" (submit)="joinRoom()">
-        Title: <input type="text" [(ngModel)]="roomid" name="roomid" required />
+        Title: <input type="text" [(ngModel)]="roomIdToJoin" name="roomid" required />
         <button type="submit">Join</button>
       </form>
     </div>
