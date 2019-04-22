@@ -1,0 +1,6 @@
+<agm-map #gmap>
+  <ng-template ngFor [ngForOf]="markers" let-mark>
+      <agm-marker [latitude]="mark.lat" [longitude]="mark.lng"
+        [iconUrl]="mark.icon"></agm-marker>
+  </ng-template>
+</agm-map>
