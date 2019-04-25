@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use(session);
 
 var server = app.listen(4000, function() {
-  console.log('started');
+  console.log('* server started at 4000');
 });
 
 var io = socket(server);
@@ -53,7 +53,7 @@ io.use(function(socket, next) {
 });
 
 db.mongodb.on('connected',() => {
-  console.log('mongoose connected');
+  console.log('* mongoose connected');
 });
 
 
@@ -88,9 +88,8 @@ app.post('/send-msg', (req, res) => {
     mood: 'poker', 
     replyTo: null, 
     roomId: req.body.roomId});
-  msg.save(function(err, msg) { 
-    console.log('message saved', msg);
-    // io.in(msg.roomId).emit(msg.message);
+  msg.save((err, msg) => { 
+    console.log('* message saved by user ' + req.session.userIdPub, msg);
     io.emit(msg.roomId, msg.message)
     res.send(true);
   });
@@ -106,14 +105,14 @@ app.get('/create', (req, res) => {
   req.session.userIdPub = user.userIdPub;
 
   var roomId = uuidv4();
-  console.info('new room crated with title : ' + req.query.title);
+  console.info('* new room crated with title : ' + req.query.title);
   const room = new db.schema.Room({title: req.query.title, roomId: roomId, owner: user.userId, members: [], settings: {}});
   room.save((err, data) => {
     if (err){
-      console.log(err);
+      console.log('* error at "room save"', err);
       res.send(null);
     } else {
-      console.log('success', data);
+      console.log('* room saved with id ' + data.roomId);
       res.send({
         room: {
           roomId: data.roomId,
@@ -126,10 +125,16 @@ app.get('/create', (req, res) => {
 });
 
 app.get('/room', (req, res) => {
-  var roomId = uuidv4();
   db.schema.Room.findOne(
     {roomId: req.query.roomId},
-    (err, data) => res.send(data));
+    (err, data) => {
+      if (err) {
+        console.log('* error at "get room"', err);
+        res.send(err);
+      } else {
+        res.send(data);
+      }
+    });
 });
 
 app.get('/user', (req, res) => {
@@ -144,8 +149,8 @@ app.get('/user', (req, res) => {
  */
 io.on('connection', function(socket) {
   socket.on('join', function(room) {
-    console.log(socket.handshake.session, '' + socket.handshake.session + ' wants to join ' + room);
-    
+    console.log('* ' + socket.handshake.session.userId + ' wants to join ' + room);
+    addUserToRoom(socket.handshake.session.userId, room);
       socket.join(room);
       socket.on(room, (data) => {
         // socket.in(room).emit(data);
@@ -161,9 +166,11 @@ io.on('connection', function(socket) {
 var userSet = function(req, res) {
   let userId = uuidv4(), userIdPub = uuidv4();
   if (!req.session || !req.session.userId || !req.session.userIdPub) {
-    var user = new db.schema.User({userId: userId, userIdPub: userIdPub, name: req.name});
+    var user = new db.schema.User({userId: userId, userIdPub: userIdPub, name: req.body.name});
     user.save(function(err) {
-      console.log(err);
+      if (err) {
+        console.log('* error at setting user' ,err);
+      }
     });
   } else {
     userId = req.session.userId;
@@ -177,4 +184,40 @@ var userSet = function(req, res) {
     userId: userId,
     userIdPub: userIdPub
   });
+}
+
+function addUserToRoom(userId, roomId) {
+  db.schema.Room.findOne({roomId: roomId},
+    (err, room) => {
+      if (err) {
+        console.log('* error at getting room ' + roomId);
+      } else {
+        db.schema.User.findOne({userId: userId},
+          (err, user) => {
+            if (err) {
+              console.log('* error at getting user ' + userId);
+            } else {
+              console.log('* Adding user ' + userId + ' to room ' + roomId);
+              db.schema.Room.findOneAndUpdate(
+                { roomId: roomId }, 
+                { $push: { members: user } },
+                null,
+                (err, userUpd) => {
+                  if (err) {
+                    console.log('* error while adding user to room');
+                  }
+                });
+              db.schema.User.findOneAndUpdate(
+                { userId: userId }, 
+                { $push: { rooms: room } },
+                null,
+                (err, userUpd) => {
+                  if (err) {
+                    console.log('* error while adding room to user');
+                  }
+                });
+            }
+          });
+      }
+    });
 }
