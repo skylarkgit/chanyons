@@ -1,5 +1,20 @@
-<div *ngIf="user.exists">
-  <section>
+<swiper #swiperI [config]="config">
+  <div class="nosWipe">
+    <app-gmap></app-gmap>
+  </div>
+  <div class="nosWipe">
+    <section *ngIf="room">
+      <h2>ROOM {{room.title}}</h2>
+      <div *ngFor="let msg of msgs">
+        {{ msg }}
+      </div>
+      <form name="msgbox" (submit)="sendMsg()">
+        <input type="text" [(ngModel)]="message" name="message" required />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </div>
+  <div class="nosWipe">
     <h2>
       create room ui
     </h2>
@@ -9,39 +24,21 @@
         <button type="submit">Create</button>
       </form>
     </div>
-  </section>
-
-  <hr />
-
-  <section *ngIf="room">
-    <h2>ROOM {{room.title}}</h2>
-    <div *ngFor="let msg of msgs">
-      {{ msg }}
-    </div>
-    <form name="msgbox" (submit)="sendMsg()">
-      <input type="text" [(ngModel)]="message" name="message" required />
-      <button type="submit">Send</button>
-    </form>
-  </section>
-
-  <hr />
 
   <section>
-    <h2>YourRooms</h2>
-  </section>
+      <h2>YourRooms</h2>
+    </section>
 
-  <section>
-    <h2>Join Room</h2>
-    <div>
-      <form name="join" (submit)="joinRoom()">
-        Title: <input type="text" [(ngModel)]="roomIdToJoin" name="roomid" required />
-        <button type="submit">Join</button>
-      </form>
-    </div>
-  </section>
-</div>
-
-<div *ngIf="!user.exists">
-  <button (click)="login()">Login</button>
-</div>
-<app-gmap></app-gmap>
+    <section>
+      <h2>Join Room</h2>
+      <div>
+        <form name="join" (submit)="joinRoom()">
+          Title: <input type="text" [(ngModel)]="roomIdToJoin" name="roomid" required />
+          <button type="submit">Join</button>
+        </form>
+      </div>
+    </section>
+  </div>
+</swiper>
+<button class="btn btn-success m-2" (click)="swiperI.directiveRef.prevSlide(100)">prev</button>
+<button class="btn btn-success m-2" (click)="swiperI.directiveRef.nextSlide(100)">next</button>

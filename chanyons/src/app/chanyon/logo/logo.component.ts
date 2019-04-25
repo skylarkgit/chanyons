@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-logo',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogoComponent implements OnInit {
 
+  @Input() size: string;
+
   constructor() { }
 
   ngOnInit() {
+    if (!this.size) {
+      this.size = '1.5em';
+    }
   }
 
 }

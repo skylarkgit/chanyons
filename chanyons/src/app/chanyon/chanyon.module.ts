@@ -43,7 +43,8 @@ export const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     RoomComponent,
     LoginComponent,
     PageNotFoundComponent,
-    GmapComponent
+    GmapComponent,
+    LogoComponent
   ],
   providers: [
     { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG}

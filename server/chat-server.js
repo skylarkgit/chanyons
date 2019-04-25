@@ -74,7 +74,7 @@ app.get('/', (req ,res) => {
 /**
  * Request to create a new user
  */
-app.get('/new-user', (req, res) => {
+app.post('/new-user', (req, res) => {
   res.send(userSet(req, res));
 });
 
@@ -161,7 +161,7 @@ io.on('connection', function(socket) {
 var userSet = function(req, res) {
   let userId = uuidv4(), userIdPub = uuidv4();
   if (!req.session || !req.session.userId || !req.session.userIdPub) {
-    var user = new db.schema.User({userId: userId, userIdPub: userIdPub, name: 'ad'});
+    var user = new db.schema.User({userId: userId, userIdPub: userIdPub, name: req.name});
     user.save(function(err) {
       console.log(err);
     });

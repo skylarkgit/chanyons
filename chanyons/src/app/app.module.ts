@@ -1,3 +1,4 @@
+import { LoginModule } from './login/login.module';
 import { Interceptor } from './http/interceptor';
 import { ChanyonModule } from './chanyon/chanyon.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +16,7 @@ import { appRoutes } from './router.states';
   imports: [
     BrowserModule,
     ChanyonModule,
+    LoginModule,
     RouterModule.forRoot( appRoutes , {enableTracing: true})
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true}],

@@ -1,10 +1,33 @@
-<app-logo></app-logo>
-<swiper #swiperI>
-  <div>
-    Swiper slide content
-    <button class="btn btn-success m-2" (click)="swiperI.directiveRef.nextSlide(1000)">Next</button>
+<!-- <app-logo size="1em"></app-logo> -->
+<swiper #swiperI [config]="config">
+  <div class="noSwipe">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <app-logo size="4em"></app-logo>
+        </div>
+        <div class="col-md-6">
+          <div class="h-100 d-flex justify-content-center align-items-center">
+            <button class="btn btn-success m-2" (click)="swiperI.directiveRef.nextSlide(1000)">Join Community</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div>
-    adasd
+  <div class="noSwipe">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 text-center">
+            <div class="h-100 d-flex justify-content-center align-items-center">
+                <input type="text" placeholder="Enter your handle">
+            </div>
+        </div>
+        <div class="col-md-6">
+          <div class="h-100 d-flex justify-content-center align-items-center">
+            <button class="btn btn-success m-2" (click)="swiperI.directiveRef.nextSlide(1000)">Join</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </swiper>

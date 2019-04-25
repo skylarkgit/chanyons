@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SwiperComponent } from 'ngx-swiper-wrapper';
+import { SwiperComponent, SwiperConfig } from 'ngx-swiper-wrapper';
 
 @Component({
   selector: 'app-login',
@@ -7,6 +7,11 @@ import { SwiperComponent } from 'ngx-swiper-wrapper';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  config = {
+    noSwiping: true,
+    noSwipingClass: 'noSwipe'
+  };
 
   constructor() { }
 
