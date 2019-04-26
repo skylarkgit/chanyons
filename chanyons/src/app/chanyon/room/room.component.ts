@@ -1,3 +1,4 @@
+import { DataServiceService } from './../../chanyon-api/data-service.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
@@ -17,11 +18,14 @@ export class RoomComponent implements OnInit {
   room: any;
   user: any = {exists: false};
   roomIdToJoin: string;
+  index = 2;
+  rooms: any[];
 
   constructor(
     private socket: Socket,
     private httpClient: HttpClient,
-    private cookieService: CookieService) {
+    private cookieService: CookieService,
+    private dataService: DataServiceService) {
     if (navigator) {
       navigator.geolocation.getCurrentPosition(pos => console.log('position', pos));
     }
@@ -30,6 +34,7 @@ export class RoomComponent implements OnInit {
   ngOnInit() {
     this.msgs = [];
     this.initUser();
+    this.getRooms();
   }
 
   sendMsg() {
@@ -82,4 +87,7 @@ export class RoomComponent implements OnInit {
     });
   }
 
+  getRooms() {
+    this.dataService.rooms().subscribe(data => this.rooms = data);
+  }
 }

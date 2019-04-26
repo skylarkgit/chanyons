@@ -124,6 +124,9 @@ app.get('/create', (req, res) => {
   });
 });
 
+/**
+ * Get room by Id
+ */
 app.get('/room', (req, res) => {
   db.schema.Room.findOne(
     {roomId: req.query.roomId},
@@ -136,6 +139,25 @@ app.get('/room', (req, res) => {
       }
     });
 });
+
+/**
+ * Get rooms of current user
+ */
+app.get('/rooms', (req, res) => {
+  db.schema.User.findOne({userId: req.session.userId})
+  .populate('rooms')
+  .exec((err, data) => {
+    console.log('userget', data);
+      if (err) {
+        console.log('* error at "get rooms" of user ' + req.session.userId, err);
+        res.send(err);
+      } else {
+        res.send(data.rooms);
+      }
+    });
+});
+
+
 
 app.get('/user', (req, res) => {
   const user = {

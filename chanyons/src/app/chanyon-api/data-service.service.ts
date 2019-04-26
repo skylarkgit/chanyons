@@ -18,4 +18,8 @@ export class DataServiceService {
   login(name: string): Observable<any> {
     return this.http.post(this.url + 'new-user', {name: name});
   }
+
+  rooms(): Observable<any[]> {
+    return this.http.get<any[]>(this.url + 'rooms');
+  }
 }

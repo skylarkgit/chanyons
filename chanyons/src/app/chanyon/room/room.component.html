@@ -1,4 +1,4 @@
-<swiper #swiperI [config]="config">
+<swiper #swiperI [config]="config" [(index)]="index">
   <div class="nosWipe">
     <app-gmap></app-gmap>
   </div>
@@ -27,6 +27,9 @@
 
   <section>
       <h2>YourRooms</h2>
+      <div *ngFor="let r of rooms">
+        <span>{{r.title}}</span>
+      </div>
     </section>
 
     <section>
