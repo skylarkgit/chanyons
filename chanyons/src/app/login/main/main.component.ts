@@ -21,8 +21,12 @@ export class MainComponent implements OnInit {
     keyboard: {
       enabled: true,
       onlyInViewport: false,
-    }
+    },
+    effect: 'fade'
   };
+
+  index = 0;
+  loginIndex = 0;
 
   user: any = {};
   name: string;

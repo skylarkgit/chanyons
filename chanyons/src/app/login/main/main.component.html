@@ -1,7 +1,7 @@
 <!-- <app-logo size="1em"></app-logo> -->
-<swiper [config]="configPage">
+<swiper [(index)]="index" [config]="configPage">
   <div>
-    <swiper #swiperI [config]="configLogin">
+    <swiper *ngIf="index == 0" [(index)]="loginIndex" #swiperI [config]="configLogin">
       <div class="noSwipe bg bg-1">
         <div class="h-100 d-flex flex-column justify-content-center align-content-center">
           <app-logo class="text-center" size="10vw" style="min-height: 100px; width: 90%;"></app-logo>
@@ -40,12 +40,12 @@
     ScreenShot
   </div>
   <div class="bg bg-3 p-3">
-    <div class="content-container">
+    <div *ngIf="index == 5" class="content-container">
       <div class="h-100 container-fluid">
         <div class="h-100 row">
           <div class="col-md-6">
             <div class="d-flex justify-content-around h-100 align-items-center">
-              <div><img src="assets/img/betaside-logo.png"></div>
+              <div><img class="swing-in-top-fwd" src="assets/img/betaside-logo.png"></div>
             </div>
           </div>
           <div class="col-md-6">
