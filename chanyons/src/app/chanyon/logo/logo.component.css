@@ -1,9 +1,12 @@
 .chanyons-logo {
+  text-align: center;
+  display: inline;
+}
+
+.chanyons-logo-text {
   font-weight: 700;
   color: black;
   font-family: 'Kanit';
-  text-align: center;
-  display: inline;
 }
 
 .Y {

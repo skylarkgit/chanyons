@@ -1,0 +1,16 @@
+:host >>> .chanyons-logo {
+  display: inline-block !important;
+  width: 80vw;
+}
+
+:host >>> .s-wrapper {
+  height: 100vh !important;
+  width: 100vw !important
+}
+
+.content-container {
+  background-color: rgba(0,0,0,0.9);
+  display: inline-block;
+  height: 100%;
+  width:100%
+}

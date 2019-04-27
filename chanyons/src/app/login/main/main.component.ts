@@ -1,3 +1,4 @@
+import { SwiperConfig } from 'ngx-swiper-wrapper';
 import { DataServiceService } from './../../chanyon-api/data-service.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,9 +10,18 @@ import { Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
 
-  config = {
+  configLogin = {
     noSwiping: true,
     noSwipingClass: 'noSwipe'
+  };
+
+  configPage = {
+    direction: 'vertical',
+    slidesPerView: 1,
+    keyboard: {
+      enabled: true,
+      onlyInViewport: false,
+    }
   };
 
   user: any = {};

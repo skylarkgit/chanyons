@@ -3,3 +3,79 @@
 * {
   font-family: 'Barlow', sans-serif;
 }
+
+.btn {
+  border-radius: 500px
+}
+
+.btn-spill>* {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%
+}
+
+input {
+  border-radius: 500px;
+  border-collapse: collapse;
+  border-style: none;
+  background-color: rgb(0, 0, 0, 0.6);
+  padding: 0.5em 1em
+}
+
+.bg {
+  background-position: center;
+  background-size: cover;
+}
+
+.bg-fix {
+  background-attachment: fixed;
+}
+
+.bg-1 {
+  background-image: url('assets/img/chanyons/chanyon1.jpg')
+}
+
+.bg-2 {
+  background-image: url('assets/img/chanyons/chanyon2.jpg')
+}
+
+.bg-3 {
+  background-image: url('assets/img/chanyons/chanyon3.jpg')
+}
+
+.bg-4 {
+  background-image: url('assets/img/chanyons/chanyon4.jpg')
+}
+
+.bg-5 {
+  background-image: url('assets/img/chanyons/chanyon5.jpeg')
+}
+
+.bg-6 {
+  background-image: url('assets/img/chanyons/chanyon6.jpg')
+}
+
+.bg-7 {
+  background-image: url('assets/img/chanyons/chanyon7.jpg')
+}
+
+.bg-8 {
+  background-image: url('assets/img/chanyons/chanyon8.jpg')
+}
+
+.bg-9 {
+  background-image: url('assets/img/chanyons/chanyon9.jpg')
+}
+
+.bg-10 {
+  background-image: url('assets/img/chanyons/chanyon10.jpg')
+}
+
+.bg-11 {
+  background-image: url('assets/img/chanyons/chanyon11.jpg')
+}
+
+.bg-sand {
+  background-image: linear-gradient(to right top, #1b1623, #201a2b, #251f33, #2b233b, #302843, #382f4d, #413757, #493f62, #574b70, #66577f, #75648e, #84719d);
+}
