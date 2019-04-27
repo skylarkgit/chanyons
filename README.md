@@ -1,2 +1,2 @@
 # chanyons
-Chat anononymously
+Chat anonymously
