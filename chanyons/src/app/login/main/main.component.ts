@@ -17,13 +17,28 @@ export class MainComponent implements OnInit {
 
   configPage = {
     direction: 'vertical',
-    slidesPerView: 1,
     keyboard: {
       enabled: true,
-      onlyInViewport: false,
-    },
-    effect: 'fade'
+      onlyInViewport: false
+    }
   };
+
+  bg = [
+    'url("assets/img/chanyons/chanyon1.jpg")',
+    'url("assets/img/chanyons/chanyon2.jpg")',
+    'url("assets/img/chanyons/chanyon3.jpg")',
+    'url("assets/img/chanyons/chanyon4.jpg")',
+    'url("assets/img/chanyons/chanyon5.jpeg")',
+    'url("assets/img/chanyons/chanyon6.jpg")',
+    'url("assets/img/chanyons/chanyon7.jpg")',
+    'url("assets/img/chanyons/chanyon8.jpg")',
+    'url("assets/img/chanyons/chanyon9.jpg")',
+    'url("assets/img/chanyons/chanyon10.jpg")',
+    'url("assets/img/chanyons/chanyon11.jpg")',
+    'url("assets/img/chanyons/chanyon1.jpg")',
+    'url("assets/img/chanyons/chanyon1.jpg")',
+    'url("assets/img/chanyons/chanyon1.jpg")',
+  ];
 
   index = 0;
   loginIndex = 0;
