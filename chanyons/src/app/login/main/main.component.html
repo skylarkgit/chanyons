@@ -1,12 +1,20 @@
-<div class="full-view">
+<div class="full-view bg-1 bg">
   <swiper [config]="configPage">
     <div>
       <swiper #swiperLogin [config]="configLogin">
-        <div>
-          Join
-          <button (click)="swiperLogin.directiveRef.nextSlide()"></button>
+        <div class="noSwipe bg-theme">
+          <div class="portfolio-container">
+            <div>
+              <app-logo class="title"></app-logo>
+            </div>
+            <div class="description">
+              <h1 class="font-weight-bold mb-2">Join the community</h1>
+              <h6 class="mb-3">Become the part of secret society</h6>
+              <button class="btn mb-1" (click)="swiperLogin.directiveRef.nextSlide()">Join</button>
+            </div>
+          </div>
         </div>
-        <div>
+        <div class="noSwipe">
           Connect
         </div>
       </swiper>
